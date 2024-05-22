@@ -50,7 +50,7 @@
     .separation(function(a,b){return 10;})
     .size([height-2*border,width-2*border]);
 
-  d3.json("me.json", function(data){
+  d3.json("https://jnamerz.github.io/myskilltree/me.json", function(data){
 
     //alert(JSON.stringify(data));
 
