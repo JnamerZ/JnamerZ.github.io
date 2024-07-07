@@ -8,6 +8,8 @@
 	<!-- title -->
 	
 	<title>
+	
+		pwn综述 | 
 	 
 	JnamerZ&#39;s Blog
 	</title>
@@ -123,7 +125,7 @@
 							</ul>
 			
 							<ul>
-								<li class="file">
+								<li class="file active">
 									<a href="/2024/07/07/pwn%E7%BB%BC%E8%BF%B0/">
                      
 										    pwn综述
@@ -150,41 +152,123 @@
 
 	<!-- 引入正文 -->
 	<div id="content" class="content">
-		<div id="index">
+		<h1 id="article-title">
+	pwn综述
+</h1>
+
+<!-- meta -->
+<div class="article-meta">
 	
-		<div class="index-li">
-			<a href="/2024/07/07/Start/">
-				<h2 class="index-title">
-					Start
-				</h2>
-				<div class="index-brief">
-					Before Everything第一次搭博客有点紧张，也是在别人的催促下启动了这个鸽了好久的事情。
-搭博客的初衷其实和学长告诉我博客给我带来的好处不沾边，只不过是想以我自己的形式重新组织学到的知识，同时也算是对看之前大佬们的博客的一种传承吧。
-至于内容，我更倾向于组织知识之间的联系，构建成体系的知
-					...
-				</div>
-			</a>
-                <div class="article-meta">
-				    <span>2024-07-07</span>
-                    
-                            
-                                
-                                    <span>
-                                        <i class="fa fa-folder" aria-hidden="true"></i>
-                                        <a href="/categories/杂项/">杂项</a>
-										
-                                    </span>
-                                
-                            
-                    
-                </div>
-		</div>	
-	
-	
-	<div id="index-paginator">
-		
-	</div>
+
+	<span>JnamerZ</span>
+	<span>2024-07-07 15:11:34</span>
+
+  <div id="article-categories">
+    
+		  <span>Categories：</span>
+      
+          
+              <span>
+                  <i class="fa fa-folder" aria-hidden="true">
+                  <a href="/categories/CTF/">CTF</a>
+                  </i>
+                
+              </span>
+          
+      
+    
+
+    
+		    <span>Tags：</span>
+        
+            
+                <span>
+                    <i class="fa fa-tag" aria-hidden="true">
+                    <a href="/tags/ctf/">ctf</a>
+                    </i>
+                </span>
+            
+        
+            
+                <span>
+                    <i class="fa fa-tag" aria-hidden="true">
+                    <a href="/tags/pwn/">pwn</a>
+                    </i>
+                </span>
+            
+        
+    
+  </div>
+
 </div>
+
+<!-- content -->
+<div id="article-content">
+	<h1 id="绪论"><a href="#绪论" class="headerlink" title="绪论"></a>绪论</h1><p>关于pwn的一些定义、说法已经在网络上有很多了，我不会在博客中赘述。</p>
+<p>pwn本质上就是利用程序（特指二进制程序）的漏洞，获取远程主机上的信息。pwn的特点是需要利用一些手段控制CPU寄存器和内存的状态。</p>
+<h1 id="pwn在做什么"><a href="#pwn在做什么" class="headerlink" title="pwn在做什么"></a>pwn在做什么</h1><p>除去逆向工程、源码审计，pwn本身就是在做三件事情：rwx</p>
+<ul>
+<li>r (read): 获取某个寄存器或者内存某位置上的内容</li>
+<li>w (write): 把一段数据写入某个寄存器或者内存某位置</li>
+<li>x (execute): 执行内存中某些位置的代码</li>
+</ul>
+<p>通过r、w、x的组合，我们可以获取远程主机上相应的信息。</p>
+<h1 id="关于博客里的内容"><a href="#关于博客里的内容" class="headerlink" title="关于博客里的内容"></a>关于博客里的内容</h1><p>这里会动态更新一个链接列表，把相关的利用方法进行归类整理</p>
+<h2 id="READ"><a href="#READ" class="headerlink" title="READ"></a>READ</h2><ul>
+<li>利用字符串\0截止进行泄露信息</li>
+<li>ret2puts&#x2F;printf&#x2F;write&#x2F;…</li>
+<li>ret2syscall-1</li>
+<li>writev&#x2F;pwrite&#x2F;pwritev2&#x2F;aio-bypass&#x2F;io_uring</li>
+<li>printf+格式化字符串</li>
+<li>stack smash</li>
+<li>UAF&#x2F;heap exploitation</li>
+<li>_IO_2_1_stdout_</li>
+<li>…</li>
+</ul>
+<h2 id="WRITE"><a href="#WRITE" class="headerlink" title="WRITE"></a>WRITE</h2><ul>
+<li>ret2gets&#x2F;scanf&#x2F;read&#x2F;…</li>
+<li>srop</li>
+<li>scanf&#x2F;printf+格式化字符串</li>
+<li>…</li>
+</ul>
+<h2 id="EXECUTE"><a href="#EXECUTE" class="headerlink" title="EXECUTE"></a>EXECUTE</h2><ul>
+<li>ret2xxx</li>
+<li>劫持__xxx_hook</li>
+<li>FSOP</li>
+<li>_IO_vtable</li>
+<li>…</li>
+</ul>
+<p><del>这里我先随便填一点，等之后写了具体内容再详细更新吧</del></p>
+
+</div>
+
+<!-- post-guide -->
+
+    <div class="post-guide">
+        <div class="item left">
+            
+        </div>
+        <div class="item right">
+            
+              <a href="/2024/07/07/%E5%9F%BA%E7%A1%80linux%E7%94%A8%E6%88%B7%E6%80%81pwn/">
+                基础linux用户态pwn
+                <i class="fa fa-angle-right" aria-hidden="true"></i>
+              </a>
+            
+        </div>
+    </div>
+
+
+<!-- comment - giscus -->
+
+
+<!-- comment - valine -->
+
+
+<script>
+	
+	
+</script>
 
 	</div>
 	<div id="footer">

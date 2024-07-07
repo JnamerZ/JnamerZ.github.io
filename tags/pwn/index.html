@@ -153,14 +153,16 @@
 		<div id="index">
 	
 		<div class="index-li">
-			<a href="/2024/07/07/Start/">
+			<a href="/2024/07/07/pwn%E7%BB%BC%E8%BF%B0/">
 				<h2 class="index-title">
-					Start
+					pwn综述
 				</h2>
 				<div class="index-brief">
-					Before Everything第一次搭博客有点紧张，也是在别人的催促下启动了这个鸽了好久的事情。
-搭博客的初衷其实和学长告诉我博客给我带来的好处不沾边，只不过是想以我自己的形式重新组织学到的知识，同时也算是对看之前大佬们的博客的一种传承吧。
-至于内容，我更倾向于组织知识之间的联系，构建成体系的知
+					绪论关于pwn的一些定义、说法已经在网络上有很多了，我不会在博客中赘述。
+pwn本质上就是利用程序（特指二进制程序）的漏洞，获取远程主机上的信息。pwn的特点是需要利用一些手段控制CPU寄存器和内存的状态。
+pwn在做什么除去逆向工程、源码审计，pwn本身就是在做三件事情：rwx
+
+r (read)
 					...
 				</div>
 			</a>
@@ -171,7 +173,41 @@
                                 
                                     <span>
                                         <i class="fa fa-folder" aria-hidden="true"></i>
-                                        <a href="/categories/杂项/">杂项</a>
+                                        <a href="/categories/CTF/">CTF</a>
+										
+                                    </span>
+                                
+                            
+                    
+                </div>
+		</div>	
+	
+		<div class="index-li">
+			<a href="/2024/07/07/%E5%9F%BA%E7%A1%80linux%E7%94%A8%E6%88%B7%E6%80%81pwn/">
+				<h2 class="index-title">
+					基础linux用户态pwn
+				</h2>
+				<div class="index-brief">
+					综述基础linux用户态pwn主要指的是分析并利用程序在用户态下存在的漏洞。主要存在以下几种利用：
+
+栈利用
+格式化字符串利用
+堆利用
+IO_FILE利用
+
+还有一类比较特殊的简单题目，需要在给定限制条件下写shellcode，我会在另一篇文章中介绍。
+栈利用栈利用的本质是通过非法修改栈上的数据，劫
+					...
+				</div>
+			</a>
+                <div class="article-meta">
+				    <span>2024-07-07</span>
+                    
+                            
+                                
+                                    <span>
+                                        <i class="fa fa-folder" aria-hidden="true"></i>
+                                        <a href="/categories/CTF/">CTF</a>
 										
                                     </span>
                                 
