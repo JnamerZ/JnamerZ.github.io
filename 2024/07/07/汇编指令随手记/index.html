@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+	
+	<!-- title -->
+	
+	<title>
+	
+		汇编指令随手记 | 
+	 
+	JnamerZ&#39;s Blog🏠
+	</title>
+	
+	<!-- keywords,description -->
+	
+	
+
+	<!-- favicon -->
+	
+	<link rel="shortcut icon" href="/favicon.ico">
+	
+
+
+	<!-- search -->
+	<script>
+		var searchEngine = "";
+		if(typeof searchEngine == "undefined" || searchEngine == null || searchEngine == ""){
+			searchEngine = "https://www.google.com/search?q=";
+		}
+		var homeHost = "";
+		if(typeof homeHost == "undefined" || homeHost == null || homeHost == ""){
+			homeHost = window.location.host;
+		}
+	</script>
+
+
+	
+<link rel="stylesheet" href="/css/main.css">
+
+	
+<link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.min.css">
+
+	
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.17.1/build/styles/darcula.min.css">
+
+	
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
+
+
+	
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.7.0/dist/jquery.min.js"></script>
+
+	
+<script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+	
+<script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.17.1/build/highlight.min.js"></script>
+
+	
+<script src="https://cdn.jsdelivr.net/npm/jquery-pjax@2.0.1/jquery.pjax.min.js"></script>
+
+	
+<script src="/js/main.js"></script>
+
+
+	
+	
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+	<header id="header">
+    <a id="title" href="/" class="logo">JnamerZ's Blog🏠</a>
+
+	<ul id="menu">
+    
+
+    
+
+    
+
+    
+      
+      
+        <li class="menu-item">
+          <a href='https://github.com/JnamerZ/JnamerZ.github.io' class="menu-item-link" target="_blank">
+            JnamerZ.github.io
+          </a>
+        </li>
+      
+    
+  
+    
+      <li class="menu-item">
+        <a href='https://github.com/JnamerZ' class="menu-item-link" target="_blank">
+          <i class="fa fa-github fa-2x"></i>
+        </a>
+      </li>
+    
+	</ul>
+</header>
+
+	
+<div id="sidebar">
+	<button id="sidebar-toggle" class="toggle" ><i class="fa fa-arrow-right " aria-hidden="true"></i></button>
+	
+	<div id="site-toc">
+		<input id="search-input" class="search-input" type="search" placeholder="按回车全站搜索">
+		<div id="tree">
+			
+
+			
+							<ul>
+								<li class="file">
+									<a href="/2024/07/07/Start/">
+                     
+										    Start
+                     
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2024/07/07/pwn%E7%BB%BC%E8%BF%B0/">
+                     
+										    pwn综述
+                     
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2024/07/07/%E5%9F%BA%E7%A1%80linux%E7%94%A8%E6%88%B7%E6%80%81pwn/">
+                     
+										    基础linux用户态pwn
+                     
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file active">
+									<a href="/2024/07/07/%E6%B1%87%E7%BC%96%E6%8C%87%E4%BB%A4%E9%9A%8F%E6%89%8B%E8%AE%B0/">
+                     
+										    汇编指令随手记
+                     
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+		</div>
+	</div>
+</div>
+
+	<!-- 引入正文 -->
+	<div id="content" class="content">
+		<h1 id="article-title">
+	汇编指令随手记
+</h1>
+
+<!-- meta -->
+<div class="article-meta">
+	
+
+	<span>JnamerZ</span>
+	<span>2024-07-07 20:45:10</span>
+
+  <div id="article-categories">
+    
+		  <span>Categories：</span>
+      
+          
+              <span>
+                  <i class="fa fa-folder" aria-hidden="true">
+                  <a href="/categories/ctf/">ctf</a>
+                  </i>
+                
+                  >
+                
+              </span>
+          
+      
+          
+              <span>
+                  <i class="fa fa-folder" aria-hidden="true">
+                  <a href="/categories/ctf/编程语言/">编程语言</a>
+                  </i>
+                
+              </span>
+          
+      
+    
+
+    
+		    <span>Tags：</span>
+        
+            
+                <span>
+                    <i class="fa fa-tag" aria-hidden="true">
+                    <a href="/tags/ctf/">ctf</a>
+                    </i>
+                </span>
+            
+        
+            
+                <span>
+                    <i class="fa fa-tag" aria-hidden="true">
+                    <a href="/tags/编程语言/">编程语言</a>
+                    </i>
+                </span>
+            
+        
+            
+                <span>
+                    <i class="fa fa-tag" aria-hidden="true">
+                    <a href="/tags/汇编语言/">汇编语言</a>
+                    </i>
+                </span>
+            
+        
+    
+  </div>
+
+</div>
+
+<!-- content -->
+<div id="article-content">
+	<h1 id="开头"><a href="#开头" class="headerlink" title="开头"></a>开头</h1><p>本篇将记录一些关于汇编指令的一些东西，会动态更新</p>
+<h1 id="寄存器"><a href="#寄存器" class="headerlink" title="寄存器"></a>寄存器</h1><p>不同架构下寄存器名称可能会不一样，这里用一些比较通用的符号来表示相关的寄存器</p>
+<h1 id="常用指令"><a href="#常用指令" class="headerlink" title="常用指令"></a>常用指令</h1><h2 id="mov"><a href="#mov" class="headerlink" title="mov"></a>mov</h2><p>将内存或寄存器中的数值进行拷贝</p>
+<h2 id="jxx"><a href="#jxx" class="headerlink" title="jxx"></a>jxx</h2><p>当满足某一条件时，修改<code>ip</code>的跳转到某个地址，其中<code>jmp</code>是无条件跳转</p>
+<p>常用于跳转到shellcode，如<code>jmp rax</code></p>
+<h2 id="push-pop"><a href="#push-pop" class="headerlink" title="push&#x2F;pop"></a>push&#x2F;pop</h2><p>将操作数压栈和弹出的指令，<code>push ax</code>等价于下面两条指令：</p>
+<ol>
+<li><code>sub sp, X</code> 其中X&#x3D;CPU位宽÷8</li>
+<li><code>mov [sp], ax</code></li>
+</ol>
+<p><code>pop ax</code>等价于下面两条指令：</p>
+<ol>
+<li><code>mov ax, [sp]</code></li>
+<li><code>add sp, X</code> 其中X&#x3D;CPU位宽÷8</li>
+</ol>
+<h2 id="call"><a href="#call" class="headerlink" title="call"></a>call</h2><p><code>call ptr</code>指令做了两件事：</p>
+<ol>
+<li>将<code>ptr</code>压入栈中</li>
+<li>跳转到<code>ptr</code></li>
+</ol>
+<p>关于<code>call</code>的花指令可以根据这一点进行分析，也常用于调用shellcode</p>
+<h2 id="leave"><a href="#leave" class="headerlink" title="leave"></a>leave</h2><p>等价于下列两条指令</p>
+<ol>
+<li><code>mov sp, bp</code></li>
+<li><code>pop bp</code></li>
+</ol>
+<h2 id="ret"><a href="#ret" class="headerlink" title="ret"></a>ret</h2><p>等价于弹出栈顶的值，并将其复制到到<code>ip</code>中</p>
+<h2 id="add"><a href="#add" class="headerlink" title="add"></a>add</h2><p>将两个操作数相加，并将结果存入其中一个。如<code>add rax, 1</code>就是将<code>rax</code>中的值与1相加，结果存入<code>rax</code>中</p>
+<h2 id="sub"><a href="#sub" class="headerlink" title="sub"></a>sub</h2><p>就是<code>add</code>的减法版本</p>
+<h2 id="shl-shr-sal-sar-rol-ror-rcl-rcr"><a href="#shl-shr-sal-sar-rol-ror-rcl-rcr" class="headerlink" title="shl&#x2F;shr&#x2F;sal&#x2F;sar&#x2F;rol&#x2F;ror&#x2F;rcl&#x2F;rcr"></a>shl&#x2F;shr&#x2F;sal&#x2F;sar&#x2F;rol&#x2F;ror&#x2F;rcl&#x2F;rcr</h2><p>对操作数进行位移操作，用法都是<code>xxx dest, count</code>，其中<code>dest</code>是目标操作数，<code>count</code>是移动的位数</p>
+<table>
+<thead>
+<tr>
+<th>指令</th>
+<th>操作</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>shl</code></td>
+<td>逻辑左移</td>
+</tr>
+<tr>
+<td><code>shr</code></td>
+<td>逻辑右移</td>
+</tr>
+<tr>
+<td><code>sal</code></td>
+<td>算术左移</td>
+</tr>
+<tr>
+<td><code>sar</code></td>
+<td>算术右移</td>
+</tr>
+<tr>
+<td><code>rol</code></td>
+<td>循环左移</td>
+</tr>
+<tr>
+<td><code>ror</code></td>
+<td>循环右移</td>
+</tr>
+<tr>
+<td><code>rcl</code></td>
+<td>带进位的循环左移</td>
+</tr>
+<tr>
+<td><code>rcr</code></td>
+<td>带进位的循环右移</td>
+</tr>
+</tbody></table>
+<h2 id="and-or-xor"><a href="#and-or-xor" class="headerlink" title="and&#x2F;or&#x2F;xor"></a>and&#x2F;or&#x2F;xor</h2><p>将两个操作数进行位运算，并将结果存入其中一个。</p>
+<p>如<code>and rax, rbx</code>就是将<code>rax</code>中的值与<code>rbx</code>中的值取与，结果存入<code>rax</code>中</p>
+<p>如<code>xor rsi, 0x101</code>就是将<code>rax</code>中的值与0x101异或，结果存入<code>rax</code>中</p>
+<p><code>xor</code>常用于清空寄存器，如<code>xor rax, rax</code></p>
+<h2 id="not-neg"><a href="#not-neg" class="headerlink" title="not&#x2F;neg"></a>not&#x2F;neg</h2><p><code>not</code>是对操作数取非并存入其中</p>
+<p><code>neg</code>是取操作数补码并存入其中</p>
+<h2 id="nop"><a href="#nop" class="headerlink" title="nop"></a>nop</h2><p>什么也不做，只会让<code>ip</code>继续向后移动</p>
+<h2 id="cmc"><a href="#cmc" class="headerlink" title="cmc"></a>cmc</h2><p>将标志位<code>CF</code>取反</p>
+<h2 id="clc"><a href="#clc" class="headerlink" title="clc"></a>clc</h2><p>将标志位<code>CF</code>置0</p>
+<h2 id="stc"><a href="#stc" class="headerlink" title="stc"></a>stc</h2><p>将标志位<code>CF</code>置1</p>
+<h2 id="cli"><a href="#cli" class="headerlink" title="cli"></a>cli</h2><p>仅内核态可用</p>
+<p>将标志位<code>IF</code>置0，关闭中断</p>
+<h2 id="sti"><a href="#sti" class="headerlink" title="sti"></a>sti</h2><p>仅内核态可用</p>
+<p>将标志位<code>IF</code>置1，打开中断</p>
+<h2 id="cld"><a href="#cld" class="headerlink" title="cld"></a>cld</h2><p>将标志位<code>DF</code>置0</p>
+<h2 id="std"><a href="#std" class="headerlink" title="std"></a>std</h2><p>将标志位<code>DF</code>置1</p>
+<h1 id="单字节指令"><a href="#单字节指令" class="headerlink" title="单字节指令"></a>单字节指令</h1><p>用于构造一些复杂的shellcode，这里只列出来不做详细解释</p>
+<ul>
+<li><code>nop</code> 144 0x90</li>
+<li><code>cmc</code> 245 0xf5</li>
+<li><code>clc</code> 248 0xf8</li>
+<li><code>stc</code> 249 0xf9</li>
+<li><code>cli</code> 250 0xfa <em>(kernel mode only)</em></li>
+<li><code>sti</code> 251 0xfb <em>(kernel mode only)</em></li>
+<li><code>cld</code> 252 0xfc</li>
+<li><code>std</code> 253 0xfd</li>
+<li><code>pop ax/bx/cx/dx/di/si/sp/bp</code></li>
+<li><code>ret</code> 0xc3</li>
+<li><code>leave</code> 0xc9</li>
+</ul>
+
+</div>
+
+<!-- post-guide -->
+
+    <div class="post-guide">
+        <div class="item left">
+            
+        </div>
+        <div class="item right">
+            
+              <a href="/2024/07/07/pwn%E7%BB%BC%E8%BF%B0/">
+                pwn综述
+                <i class="fa fa-angle-right" aria-hidden="true"></i>
+              </a>
+            
+        </div>
+    </div>
+
+
+<!-- comment - giscus -->
+
+
+<!-- comment - valine -->
+
+
+<script>
+	
+	
+</script>
+
+	</div>
+	<div id="footer">
+	<p>
+	©<span id="footerYear-start">2024</span>-<span id="footerYear-end"></span>
+
+	
+	    <a href="/">JnamerZ</a>
+	
+	
+	
+	<br>
+	Theme <a href="//github.com/wujun234/hexo-theme-tree" target="_blank">Tree</a>
+	by <a href="//wujun.me" target="_blank">Wu Jun</a>
+	Powered by <a href="//hexo.io" target="_blank">Hexo</a>
+	</p>
+</div>
+
+
+<script type="text/javascript">
+	document.getElementById('footerYear-end').innerHTML = new Date().getFullYear() + '';
+</script>
+
+	<button id="totop-toggle" class="toggle"><i class="fa fa-angle-double-up" aria-hidden="true"></i></button>
+</body>
+</html>
