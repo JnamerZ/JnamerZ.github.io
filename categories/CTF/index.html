@@ -124,6 +124,17 @@
 			
 							<ul>
 								<li class="file">
+									<a href="/2024/07/11/glibc%E5%A0%86%E7%AE%A1%E7%90%86%E5%99%A8%E7%AE%80%E4%BB%8B/">
+                     
+										    glibc堆管理器简介
+                     
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
 									<a href="/2024/07/07/pwn%E7%BB%BC%E8%BF%B0/">
                      
 										    pwn综述
@@ -164,16 +175,44 @@
 		<div id="index">
 	
 		<div class="index-li">
-			<a href="/2024/07/07/%E6%B1%87%E7%BC%96%E6%8C%87%E4%BB%A4%E9%9A%8F%E6%89%8B%E8%AE%B0/">
+			<a href="/2024/07/11/glibc%E5%A0%86%E7%AE%A1%E7%90%86%E5%99%A8%E7%AE%80%E4%BB%8B/">
 				<h2 class="index-title">
-					汇编指令随手记
+					glibc堆管理器简介
 				</h2>
 				<div class="index-brief">
-					开头本篇将记录一些关于汇编指令的一些东西，会动态更新
-寄存器不同架构下寄存器名称可能会不一样，这里用一些比较通用的符号来表示相关的寄存器
-常用指令mov将内存或寄存器中的数值进行拷贝
-jxx当满足某一条件时，修改ip的跳转到某个地址，其中jmp是无条件跳转
-常用于跳转到shellcode，如jmp 
+					堆利用是基础linux用户态pwn门槛比较高的一个点，主要由于需要审计glibc源码劝退了大部分人。其实glibc对ptmalloc2的实现，本质上就是做链表维护。理解了ptmalloc2中链表维护的思想，那么相应的利用手法也很容易掌握。
+前置知识只有链表，不了解链表可以自行补习数据结构。
+堆块可以
+					...
+				</div>
+			</a>
+                <div class="article-meta">
+				    <span>2024-07-11</span>
+                    
+                            
+                                
+                                    <span>
+                                        <i class="fa fa-folder" aria-hidden="true"></i>
+                                        <a href="/categories/CTF/">CTF</a>
+										
+                                    </span>
+                                
+                            
+                    
+                </div>
+		</div>	
+	
+		<div class="index-li">
+			<a href="/2024/07/07/pwn%E7%BB%BC%E8%BF%B0/">
+				<h2 class="index-title">
+					pwn综述
+				</h2>
+				<div class="index-brief">
+					绪论关于pwn的一些定义、说法已经在网络上有很多了，我不会在博客中赘述。
+pwn本质上就是利用程序（特指二进制程序）的漏洞，获取远程主机上的信息。pwn的特点是需要利用一些手段控制CPU寄存器和内存的状态。
+pwn在做什么除去逆向工程、源码审计，pwn本身就是在做三件事情：rwx
+
+r (read)
 					...
 				</div>
 			</a>
@@ -184,17 +223,7 @@ jxx当满足某一条件时，修改ip的跳转到某个地址，其中jmp是无
                                 
                                     <span>
                                         <i class="fa fa-folder" aria-hidden="true"></i>
-                                        <a href="/categories/ctf/">ctf</a>
-										
-											>
-										
-                                    </span>
-                                
-                            
-                                
-                                    <span>
-                                        <i class="fa fa-folder" aria-hidden="true"></i>
-                                        <a href="/categories/ctf/编程语言/">编程语言</a>
+                                        <a href="/categories/CTF/">CTF</a>
 										
                                     </span>
                                 
@@ -203,37 +232,37 @@ jxx当满足某一条件时，修改ip的跳转到某个地址，其中jmp是无
                 </div>
 		</div>	
 	
-	
-	<div id="index-paginator">
-		
-	</div>
-</div>
+		<div class="index-li">
+			<a href="/2024/07/07/%E5%9F%BA%E7%A1%80linux%E7%94%A8%E6%88%B7%E6%80%81pwn/">
+				<h2 class="index-title">
+					基础linux用户态pwn
+				</h2>
+				<div class="index-brief">
+					综述基础linux用户态pwn主要指的是分析并利用程序在用户态下存在的漏洞。主要存在以下几种利用：
 
-	</div>
-	<div id="footer">
-	<p>
-	©<span id="footerYear-start">2024</span>-<span id="footerYear-end"></span>
+栈利用
+格式化字符串利用
+堆利用
+IO_FILE利用
 
-	
-	    <a href="/">JnamerZ</a>
-	
-	
-	
-	<br>
-	Theme <a href="//github.com/wujun234/hexo-theme-tree" target="_blank">Tree</a>
-	by <a href="//wujun.me" target="_blank">Wu Jun</a>
-	Powered by <a href="//hexo.io" target="_blank">Hexo</a>
-	</p>
-</div>
-
-
-<script type="text/javascript">
-	document.getElementById('footerYear-end').innerHTML = new Date().getFullYear() + '';
-</script>
-
-	<button id="totop-toggle" class="toggle"><i class="fa fa-angle-double-up" aria-hidden="true"></i></button>
-</body>
-</html> 
+还有一类比较特殊的简单题目，需要在给定限制条件下写shellcode，我会在另一篇文章中介绍。
+栈利用栈利用的本质是通过非法修改栈上的数据，劫
+					...
+				</div>
+			</a>
+                <div class="article-meta">
+				    <span>2024-07-07</span>
+                    
+                            
+                                
+                                    <span>
+                                        <i class="fa fa-folder" aria-hidden="true"></i>
+                                        <a href="/categories/CTF/">CTF</a>
+										
+                                    </span>
+                                
+                            
+                    
                 </div>
 		</div>	
 	

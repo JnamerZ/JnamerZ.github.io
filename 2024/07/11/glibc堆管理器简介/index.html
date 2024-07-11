@@ -9,7 +9,7 @@
 	
 	<title>
 	
-		Start | 
+		glibc堆管理器简介 | 
 	 
 	JnamerZ&#39;s Blog🏠
 	</title>
@@ -114,7 +114,7 @@
 
 			
 							<ul>
-								<li class="file active">
+								<li class="file">
 									<a href="/2024/07/07/Start/">
                      
 										    Start
@@ -125,7 +125,7 @@
 							</ul>
 			
 							<ul>
-								<li class="file">
+								<li class="file active">
 									<a href="/2024/07/11/glibc%E5%A0%86%E7%AE%A1%E7%90%86%E5%99%A8%E7%AE%80%E4%BB%8B/">
                      
 										    glibc堆管理器简介
@@ -175,7 +175,7 @@
 	<!-- 引入正文 -->
 	<div id="content" class="content">
 		<h1 id="article-title">
-	Start
+	glibc堆管理器简介
 </h1>
 
 <!-- meta -->
@@ -183,7 +183,7 @@
 	
 
 	<span>JnamerZ</span>
-	<span>2024-07-07 12:07:47</span>
+	<span>2024-07-11 19:49:46</span>
 
   <div id="article-categories">
     
@@ -192,7 +192,7 @@
           
               <span>
                   <i class="fa fa-folder" aria-hidden="true">
-                  <a href="/categories/杂项/">杂项</a>
+                  <a href="/categories/CTF/">CTF</a>
                   </i>
                 
               </span>
@@ -206,7 +206,23 @@
             
                 <span>
                     <i class="fa fa-tag" aria-hidden="true">
-                    <a href="/tags/碎碎念/">碎碎念</a>
+                    <a href="/tags/ctf/">ctf</a>
+                    </i>
+                </span>
+            
+        
+            
+                <span>
+                    <i class="fa fa-tag" aria-hidden="true">
+                    <a href="/tags/pwn/">pwn</a>
+                    </i>
+                </span>
+            
+        
+            
+                <span>
+                    <i class="fa fa-tag" aria-hidden="true">
+                    <a href="/tags/堆利用/">堆利用</a>
                     </i>
                 </span>
             
@@ -218,10 +234,10 @@
 
 <!-- content -->
 <div id="article-content">
-	<h1 id="Before-Everything"><a href="#Before-Everything" class="headerlink" title="Before Everything"></a>Before Everything</h1><p>第一次搭博客有点紧张，也是在别人的催促下启动了这个鸽了好久的事情。</p>
-<p>搭博客的初衷其实和学长告诉我博客给我带来的好处不沾边，只不过是想以我自己的形式重新组织学到的知识，同时也算是对看之前大佬们的博客的一种传承吧。</p>
-<p>至于内容，我更倾向于组织知识之间的联系，构建成体系的知识框架。我不太喜欢清单式的学习记录，毕竟不是为了应付作业或者任务。所以可能以后会写一些前端做知识可视化。</p>
-<p>闲话不多说了，开始动手吧。</p>
+	<p>堆利用是基础linux用户态pwn门槛比较高的一个点，主要由于需要审计glibc源码劝退了大部分人。其实glibc对ptmalloc2的实现，本质上就是做链表维护。理解了ptmalloc2中链表维护的思想，那么相应的利用手法也很容易掌握。</p>
+<h1 id="前置知识"><a href="#前置知识" class="headerlink" title="前置知识"></a>前置知识</h1><p>只有链表，不了解链表可以自行补习数据结构。</p>
+<h1 id="堆块"><a href="#堆块" class="headerlink" title="堆块"></a>堆块</h1><p>可以在gdb中用<code>vis</code>指令查看堆块（<code>vis n</code>可以查看n个堆块）</p>
+<p><img src="/"></p>
 
 </div>
 
@@ -230,13 +246,13 @@
     <div class="post-guide">
         <div class="item left">
             
-              <a href="/2024/07/07/%E5%9F%BA%E7%A1%80linux%E7%94%A8%E6%88%B7%E6%80%81pwn/">
-                  <i class="fa fa-angle-left" aria-hidden="true"></i>
-                  基础linux用户态pwn
-              </a>
-            
         </div>
         <div class="item right">
+            
+              <a href="/2024/07/07/%E6%B1%87%E7%BC%96%E6%8C%87%E4%BB%A4%E9%9A%8F%E6%89%8B%E8%AE%B0/">
+                汇编指令随手记
+                <i class="fa fa-angle-right" aria-hidden="true"></i>
+              </a>
             
         </div>
     </div>
