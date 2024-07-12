@@ -239,7 +239,7 @@
 <h1 id="chunk-堆块"><a href="#chunk-堆块" class="headerlink" title="chunk(堆块)"></a>chunk(堆块)</h1><p>本节我将以64位为例讲解malloc_chunk(堆块)结构体</p>
 <h2 id="初识"><a href="#初识" class="headerlink" title="初识"></a>初识</h2><p>可以在gdb中用<code>vis</code>指令查看chunk（<code>vis n</code>可以查看n个chunk）</p>
 <p>图中每个颜色代表一个chunk，我们留意紫色的部分：</p>
-<p><img src="https://jnamerz.github.io/imgs/heap-fastbin.png"></p>
+<p><img src="https://jnamerz.github.io/imgs/heap-fastbins.png"></p>
 <p>chunk有一个必不可少的属性——大小，就是图中<code>0x0000000000000071</code>的8个字节，我们记为<code>size</code>。<code>size</code>记录了两个重要的信息：</p>
 <ul>
 <li>二进制低3位代表当前chunk的状态，我们约定是为1否为0，最低位表示前一个chunk是否仍在使用，次低位表示该chunk是否是通过mmap申请的，最高位表示改chunk是否属于子线程。其中最低为比较重要，后续的利用手法会用到。</li>
@@ -247,20 +247,43 @@
 </ul>
 <p><code>size</code>后面紫色的部分，是这个chunk的“可使用”部分，大小为<code>size</code> - 8。同时要注意的是，chunk的<strong>起始地址</strong>实际上为<code>size</code><strong>地址减8</strong> ，即图中的<code>0x2505070</code>，前八个字节对应为<code>prev_size</code>，后文介绍unsorted bin时会再作详细介绍。</p>
 <p>当然，这个部分“可使用”的前提是这个chunk没有被释放（free）。释放时，“可使用”部分的前几个字节会具有特殊的含义，下文会作详细解释。free函数的参数即为“可使用”部分的地址，即图中的<code>0x2505080</code>。</p>
-<h2 id="next-fastbin-tcache"><a href="#next-fastbin-tcache" class="headerlink" title="next &amp; fastbin &amp; tcache"></a>next &amp; fastbin &amp; tcache</h2><h3 id="低版本glibc"><a href="#低版本glibc" class="headerlink" title="低版本glibc"></a>低版本glibc</h3><p>当满足条件时，被释放的chunk会被放入fastbin。这里fastbin指的是glibc中的fastbinY数组（位于libc段），数组中的每个元素代表一个链表的头部，链表中保存着大小相同的chunk，每个chunk也同时为链表的一个节点，如下图所示：</p>
-<p><img src="https://jnamerz.github.io/imgs/fastbin-link.png"></p>
-<p>fastbinY中保存着大小为0x20、0x30、0x40……的chunk的链表，next保存着下一个chunk的起始地址。当一个chunk被释放时，ptmalloc2会判断这个chunk是否要放入fastbin。如果满足条件，那么chunk就会被放入fastbinY中对应链表的头部，比如上一小节的紫色chunk，就会被放入储存在fastbinY[5]的链表头部。</p>
-<p>在gdb中，用bins指令可以看到fastbin中储存的空闲chunk：</p>
-<p><img src="https://jnamerz.github.io/imgs/bins-fastbin.png"></p>
-<p>fastbin的管理策略为LIFO，即后入先出。比如上图中fastbin中已有3个chunk，若此时释放一个大小为0x70的chunk，将会放到chunk的头部；同样，如果调用<code>malloc(0x70);</code>那么就会从fastbinY[5]的头部取出一个chunk，返回给程序使用。</p>
-<p>对于fastbin的检查很少。比较常见的是在free时，会检查将要被free的chunk的起始地址，如果发现chunk在对应大小链表的头部，那么则会报错退出。</p>
+<h2 id="next-fastbins-tcache"><a href="#next-fastbins-tcache" class="headerlink" title="next &amp; fastbins &amp; tcache"></a>next &amp; fastbins &amp; tcache</h2><h3 id="低版本glibc"><a href="#低版本glibc" class="headerlink" title="低版本glibc"></a>低版本glibc</h3><p>当满足条件时，被释放的chunk会被放入fastbins。这里fastbins指的是glibc中的fastbinsY数组（位于libc段），数组中的每个元素代表一个链表的头部，链表中保存着大小相同的chunk，每个chunk也同时为链表的一个节点，如下图所示：</p>
+<p><img src="https://jnamerz.github.io/imgs/fastbins-link.png"></p>
+<p>fastbinsY中保存着大小为0x20、0x30、0x40……的chunk的链表，next保存着下一个chunk的起始地址。当一个chunk被释放时，ptmalloc2会判断这个chunk是否要放入fastbins。如果满足条件，那么chunk就会被放入fastbinsY中对应链表的头部，比如上一小节的紫色chunk，就会被放入储存在fastbinsY[5]的链表头部。</p>
+<p>在gdb中，用bins指令可以看到fastbins中储存的空闲chunk：</p>
+<p><img src="https://jnamerz.github.io/imgs/bins-fastbins.png"></p>
+<p>fastbins的管理策略为LIFO，即后入先出。比如上图中fastbins中已有3个chunk，若此时释放一个大小为0x70的chunk，将会放到chunk的头部；同样，如果调用<code>malloc(0x70);</code>那么就会从fastbinsY[5]的头部取出一个chunk，返回给程序使用。</p>
+<p>对于fastbins的检查很少。比较常见的是在free时，会检查将要被free的chunk的起始地址，如果发现chunk在对应大小链表的头部，那么则会报错退出。</p>
 <p><code>double free or corruption (fasttop)</code></p>
-<h3 id="高版本glibc"><a href="#高版本glibc" class="headerlink" title="高版本glibc"></a>高版本glibc</h3><p>glibc2.26后加入了tcache管理机制，相对于fastbin更快速，检查更少，也更容易被利用。</p>
-<p>tcache的本质和fastbin类似，但是tcache会保存各个链表的长度，这些信息保存在heap段的第一个chunk，大小一般为0x290，详细可以参考结构体源码：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span> <span class="title class_">tcache_entry</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="keyword">struct</span> <span class="title class_">tcache_entry</span> *next;</span><br><span class="line">&#125; tcache_entry;                     <span class="comment">//chunk的结构体类型</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span> <span class="title class_">tcache_perthread_struct</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="type">char</span> counts[TCACHE_MAX_BINS];</span><br><span class="line">  tcache_entry *entries[TCACHE_MAX_BINS];</span><br><span class="line">&#125; tcache_perthread_struct;          <span class="comment">//保存tcache链表信息的结构体</span></span><br></pre></td></tr></table></figure>
+<h3 id="高版本glibc"><a href="#高版本glibc" class="headerlink" title="高版本glibc"></a>高版本glibc</h3><p>glibc2.26后加入了tcache管理机制，相对于fastbins更快速，检查更少，也更容易被利用。（fastbins没有被删除）</p>
+<p>tcache的本质和fastbins类似，但是tcache会保存各个链表的长度，这些信息保存在heap段的第一个chunk，大小一般为0x290，详细可以参考结构体源码：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span> <span class="title class_">tcache_entry</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="keyword">struct</span> <span class="title class_">tcache_entry</span> *next;</span><br><span class="line">&#125; tcache_entry;                     <span class="comment">//chunk在tcache中的结构体类型</span></span><br><span class="line">                                    <span class="comment">//可以看到，chunk在tcache中只是一个单链表的节点，而且没有size信息</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span> <span class="title class_">tcache_perthread_struct</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="type">char</span> counts[TCACHE_MAX_BINS];</span><br><span class="line">  tcache_entry *entries[TCACHE_MAX_BINS];</span><br><span class="line">&#125; tcache_perthread_struct;          <span class="comment">//保存tcache链表信息的结构体</span></span><br></pre></td></tr></table></figure>
 
 <p>需要注意的是，tcache中next保存的是 <strong>“可使用”部分的起始地址</strong>，并不是chunk的起始地址。</p>
-<p>fastbin和tcache还有一个共同点，就是即使chunk被释放，chunk的<code>size</code><strong>低3位是不会被更新的</strong>，这一点要注意。</p>
+<p>fastbins和tcache还有一个共同点，就是即使chunk被释放，chunk的<code>size</code><strong>低3位是不会被更新的</strong>，这一点要注意。</p>
+<h2 id="prev-size-fd-bk-unsorted-bin"><a href="#prev-size-fd-bk-unsorted-bin" class="headerlink" title="prev_size &amp; fd &amp; bk &amp; unsorted bin"></a>prev_size &amp; fd &amp; bk &amp; unsorted bin</h2><h3 id="prev-size"><a href="#prev-size" class="headerlink" title="prev_size"></a>prev_size</h3><p>我们再来看这张图中紫色的chunk：</p>
+<p><img src="https://jnamerz.github.io/imgs/heap-fastbins.png"></p>
+<p><code>prev_size</code>是<code>size</code>之前的8个字节，比较特殊的是，当前一个chunk（蓝色）正在被使用时，这8个字节是属于前一个chunk的“可使用”部分。同理，位于<code>0x25050e0</code>的8个字节（紫色）也应该是下一个chunk（绿色）的<code>prev_size</code>。当前一个chunk被释放时，而且如果没有被放入fastbins&#x2F;tcache，例如unsorted bin，那么这个紫色的chunk也会被更新：</p>
+<ul>
+<li><code>prev_size</code>原来属于前一个chunk（蓝色）的“可使用”部分，而这一部分随着chunk被释放而不再可以被用户使用，由ptmalloc2接管。<code>prev_size</code>的位置会被写入前一个chunk（蓝色）的大小。</li>
+<li><code>size</code>字段的最低位（二进制位）也会被修改，由于前一个chunk不再处于“被使用”的状态，<code>size</code>字段的最低位会被修改为0。</li>
+</ul>
+<p>进行这样的操作目的只有一个：当这个紫色的chunk被释放时，ptmalloc2可以很方便地得知这个chunk和前一个chunk（蓝色）是可以进行合并的，进而更高效地管理堆内存。</p>
+<h3 id="fd-bk"><a href="#fd-bk" class="headerlink" title="fd &amp; bk"></a>fd &amp; bk</h3><p><code>fd</code>和<code>bk</code>类似于<code>next</code>，同样只在被释放的chunk中才会启用，比较特殊的是，只有在被释放的chunk不能放入tcache和fastbins时，<code>fd</code>和<code>bk</code>才会启用。</p>
+<p><code>fd</code>对应<code>size</code>后面8个字节，<code>bk</code>对应<code>fd</code>后面8个字节。<code>fd</code>类似于双链表中节点的<code>prev</code>，用来储存前一个空闲的chunk的<strong>起始地址</strong>；<code>bk</code>则类似于双链表中的<code>next</code>，储存后一个chunk的<strong>起始地址</strong>。</p>
+<p>这里我们借助unsorted bin理解<code>fd</code>和<code>bk</code>。</p>
+<h3 id="unsorted-bin"><a href="#unsorted-bin" class="headerlink" title="unsorted bin"></a>unsorted bin</h3><p>当被释放的chunk不满足条件，不能被放入fastbins&#x2F;tcache时，会被放入unsorted bin中。可以用bins查看当前unsorted bin中储存的chunk（倒序）：</p>
+<p><img src="https://jnamerz.github.io/imgs/bins-unsortedbin.png"></p>
+<p>unsorted bin的管理策略是FIFO，即每次从unsorted bin的头部插入chunk，从尾部取出chunk。从unsorted bin取出chunk可以被分割出一部分，以供malloc返回给程序使用，因此取chunk的条件比较宽松。</p>
+<p>输入heap指令可以看到堆中所有的chunk的状态，这里我们可以看到位于堆中三个位于unsorted bin中的chunk（绿色）。同时，可以注意到，被夹在他们中间的chunk（橙色）的<code>size</code>的最低位被设置为了0，表示其前一个chunk处于空闲状态。</p>
+<p><img src="https://jnamerz.github.io/imgs/heap-unsortedbin.png"></p>
+<p>结合上两个图可以明显看出，unsorted bin是一个双链表，其头部保存在libc段。比较特殊的是，双链表头部节点的<code>fd</code>和尾部节点的<code>bk</code>存着<code>main_arena.top</code>的地址。那么易知，当unsorted bin中只有一个chunk时，其<code>fd</code>和<code>bk</code>都是<code>main_arena.top</code>的地址。<em>（仅适用于主线程中的情况，初学者可以忽略这一点）</em></p>
+<p>这里简单介绍一下<code>main_arena</code>，<code>main_arena</code>是主线程用于储存heap中相关数据结构的结构体，各种bin链表的头部（比如fastbinsY数组）、一次申请堆空间的大小还有fastbinsY的长度等都记录在这里。但是<code>main_arena</code><strong>不直接参与tcache的管理</strong>。</p>
+<p>与unsorted bin类似的还有smallbins，这里只是简单展示一下smallbins的双链表结构：</p>
+<p><img src="https://jnamerz.github.io/imgs/heap-smallbins.png"></p>
+<p><img src="https://jnamerz.github.io/imgs/bins-smallbins.png"></p>
+<h2 id="fd-nextsize-bk-nextsize-largebins"><a href="#fd-nextsize-bk-nextsize-largebins" class="headerlink" title="fd_nextsize &amp; bk_nextsize &amp; largebins"></a>fd_nextsize &amp; bk_nextsize &amp; largebins</h2><p>在<code>fd</code>和<code>bk</code>后面16字节依次是8字节的<code>fd_nextsize</code>和8字节的<code>bk_nextsize</code>，这两个部分仅在chunk被置入largebins中启用，因此我们可以借助largebins来理解<code>fd_nextsize</code>和<code>bk_nextsize</code>。</p>
+<p>我们来分析下面这个largebin：<br><img src="https://jnamerz.github.io/imgs/bins-largebins.png"><br><img src="https://jnamerz.github.io/imgs/heap-largebins.png"></p>
 
 </div>
 
