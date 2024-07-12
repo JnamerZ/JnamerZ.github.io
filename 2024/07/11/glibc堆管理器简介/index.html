@@ -290,7 +290,7 @@
 <p>可以看到，正如上文所述，<code>fd_nextsize</code>和<code>bk_nextsize</code>紧跟在<code>bk</code>后面。类似于unsorted bin，largebins头节点的<code>fd</code>和尾节点的<code>bk</code>也是存着<code>main_arena.bins[x]</code>的地址，其中x取决于largebin中存放chunk大小的范围。</p>
 <p>根据图中的信息，我们可以构建这样的关系：</p>
 <p><img src="https://jnamerz.github.io/imgs/largebin-fdbk.png"></p>
-<p>这个<code>fd</code> <code>bk</code>组成的双链表（黑色箭头）我们已经在unsorted bin中见过了。而<code>fd_nextsize</code>和<code>bk_nextsize</code>则构成了图中带颜色箭头组成的结构。不难看出，<code>fd_nextsize</code>和<code>bk_nextsize</code>本质上是将相同大小的chunk里，第一个进入largebin的chunk串成了一个双链表，其余chunk的<code>fd_nextsize</code>和<code>bk_nextsize</code>都是0。</p>
+<p>这个<code>fd</code> <code>bk</code>组成的双链表（黑色箭头）我们已经在unsorted bin中见过了。而<code>fd_nextsize</code>和<code>bk_nextsize</code>则构成了图中带颜色箭头组成的结构。不难看出，<code>fd_nextsize</code>和<code>bk_nextsize</code>本质上是将相同大小的chunk里，第一个进入largebin的chunk串成了一个循环链表，其余chunk的<code>fd_nextsize</code>和<code>bk_nextsize</code>都是0。</p>
 <blockquote>
 <p>至此关于chunk内容已经介绍完毕，接下来介绍各种bin以及管理机制</p>
 </blockquote>
